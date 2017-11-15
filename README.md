@@ -1,5 +1,5 @@
 # modbus-over-arduino-uart
-a simple ascii modbus implementation on pure arduino uuart tx/rx
+a simple ascii modbus implementation on pure arduino uart tx/rx
 
 ## to do:
 * LRC calculation
