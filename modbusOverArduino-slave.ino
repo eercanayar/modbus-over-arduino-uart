@@ -1,8 +1,8 @@
+
 const char slaveId1 = 48;
 const char slaveId2 = 49;
 String strRead;
 int potPin = A0;
-
 
 void setup()
 {
@@ -38,34 +38,46 @@ void loop()
           Serial.write(48); // byte count 01
           Serial.write(49);
           Serial.write(48);
-          int calc = digitalRead(5) + digitalRead(6)*2 + digitalRead(7)*4;
+          int calc = digitalRead(5) + digitalRead(6)*2;
           Serial.print(calc);
           
-          
-         // int lrc1 = calcCheckSum({58,slaveId1,slaveId2,48,49,48,49,48,calc,13,10},11);
-         // Serial.print(lrc1);
+          Serial.write(70); // LRC
+         Serial.write(48); // 
+         
           Serial.write(13); // CR
           Serial.write(10); // LF
         }
         else if (strRead[3] == 48 && strRead[4] == 53) // we're in fc05
         {
+          
           Serial.write(58);
+         
           Serial.write(slaveId1);
           Serial.write(slaveId2);
+          if(strRead[11]==70 && strRead[12]==70) {
+            digitalWrite(strRead[8]-40, HIGH); // ascii to pin number trick here
+          } else if(strRead[11]==48 && strRead[12]==48) { 
+            digitalWrite(strRead[8]-40, LOW);
+          }
+          
           Serial.write(48);
           Serial.write(53);
-          Serial.write(48); // byte count 01
-          Serial.write(49); // Sor
           Serial.write(48);
-          Serial.write(7); 
-          
-        //  int lrc5 = calcCheckSum({58,slaveId1,slaveId2,48,53,48,49,48,7,13,10},11);
-        //  Serial.write(lrc5);
+          Serial.write(48);
+          Serial.write(48);
+          Serial.write(strRead[8]);
+          Serial.write(48);
+          Serial.write(48);
+          Serial.write(strRead[11]);
+          Serial.write(strRead[12]);
+
+          Serial.write(70); // LRC
+         Serial.write(48); // 
+  
          Serial.write(13); // CR
-          Serial.write(10); // LF
-        }   else if (strRead[3] == 48 && strRead[4] == 52) // we're in fc04
-       
-        {
+         Serial.write(10); // LF
+        } else if (strRead[3] == 48 && strRead[4] == 52) // we're in fc04
+         {
           Serial.write(58);
           Serial.write(slaveId1);
           Serial.write(slaveId2);
@@ -82,8 +94,9 @@ void loop()
           
           Serial.print(degerInHex);
 
-          //int lrc2 = calcCheckSum({58,48,49,48,50,48,49,48,buf,13,10},11);
-         // Serial.print(lrc2);
+         Serial.write(70); // LRC
+         Serial.write(48); // 
+         
            Serial.write(13); // CR
           Serial.write(10); // LF
         }
@@ -99,11 +112,3 @@ void loop()
 
 
 }
-
-  int * calcCheckSum (int* pack, int packSize) {
-   int sum = 0;
-   for (int i=0; i < (packSize-1); i++) sum += pack[i];
-   sum = sum & 0xFF;
-   pack[packSize-1] = 0x100 - sum;
-   return pack;
-  }
