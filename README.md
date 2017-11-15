@@ -1,8 +1,7 @@
 # modbus-over-arduino-uart
 a simple ascii modbus implementation on pure arduino uart tx/rx
 
-*project #2 of Istanbul Technical University, Control and Automation Engineering, KON435E Industrial Data Communications course, Fall 2017*
-*lecturer: ali fuat ergenc*
+*project #2 of Istanbul Technical University, Control and Automation Engineering, KON435E Industrial Data Communications course, Fall 2017, lecturer: ali fuat ergenc*
 
 ## to do:
 * LRC calculation
